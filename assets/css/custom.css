@@ -1,0 +1,38 @@
+:root {
+    --primary: #0044cc;
+    --primary-hover: #003399;
+    --primary-active: #002288;
+    --primary-light: #3366ff;
+    --primary-dark: #002b80;
+}
+
+.navbar.is-primary, .button.is-primary, .hero.is-primary, .is-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary-dark) !important;
+    color: #ffffff !important;
+}
+
+.navbar.is-primary a.navbar-item, .navbar.is-primary a.navbar-link {
+    color: #ffffff !important;
+}
+
+.navbar.is-primary .navbar-item:hover, .navbar.is-primary .navbar-link:hover {
+    background-color: var(--primary-hover) !important;
+}
+
+.navbar-logo {
+    margin: auto;
+}
+
+.navbar-logo img {
+    width: 10rem;
+}
+
+.mid-size {
+    margin: 0 auto;
+    width: 20rem;
+}
+
+.main-content {
+    margin-top: 3.25rem; /* Altura de la navbar en Bulma */
+}

@@ -1,0 +1,4 @@
+<?php
+$WEBROOT = "/xvllmwa";
+$DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'] . $WEBROOT;
+?>
