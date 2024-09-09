@@ -1,8 +1,10 @@
 <?php
 
     include('../../config/config.php');
-    include('../../config/secrets.php');
     include('../../llm/client.php');
+
+    // EXTRAER API KEY
+    $API_KEY = getAPIKey('openai', $DB_SERVERNAME, $DB_USERNAME, $DB_PASSWORD);
 
     // DEFINIR FUNCIONES
     $functions = [
@@ -23,6 +25,6 @@
 
     // DAR PERSONALIDAD A AGENTE
     $agentPrompt = "Tu nombre es RamIO. Estás diseñado para monitorear el uso de memoria en el servidor. Puedes proporcionar información detallada sobre el estado de la memoria RAM en el sistema.";
-    $agent = new Agent($OPENAI_API_KEY, $agentPrompt, $functionObject);
+    $agent = new Agent($API_KEY, $agentPrompt, $functionObject);
 
 ?>

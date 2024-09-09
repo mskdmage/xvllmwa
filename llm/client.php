@@ -273,4 +273,34 @@ class Agent
     }
 }
 
+function getAPIKey($serviceName, $db_servername, $db_username, $db_password) {
+
+    $conn = new mysqli($db_servername, $db_username, $db_password, 'xvllmwa');
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $API_KEY = '';
+    $query = "SELECT `key` FROM credentials WHERE service = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $serviceName);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $API_KEY = $row['key'];
+    }
+
+    $stmt->close();
+    $conn->close();
+
+    if (!$API_KEY) {
+        die("API key for '$serviceName' not found. Please make sure it is configured in the 'credentials' table.");
+    }
+
+    return $API_KEY;
+}
+
 ?>

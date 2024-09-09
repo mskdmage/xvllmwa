@@ -1,8 +1,8 @@
 <div class="box mb-3">
     <a href="#" class="button is-primary is-fullwidth mb-2">Configuración</a>
     <a href="<?php echo $WEBROOT; ?>/" class="button is-fullwidth">Inicio</a>
-    <a href="<?php echo $WEBROOT; ?>/get_started.php" class="button is-fullwidth">Instrucciones</a>
     <a href="<?php echo $WEBROOT; ?>/setup/" class="button is-fullwidth">Configurar / Reiniciar</a>
+    <a href="<?php echo $WEBROOT; ?>/instructions" class="button is-fullwidth">Instrucciones</a>
 </div>
 
 <div class="box mb-3">

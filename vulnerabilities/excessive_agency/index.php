@@ -1,6 +1,10 @@
 <?php
-    session_start();
-    include('../../config/config.php');
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: /xvllmwa/instructions");
+    exit();
+}
+include('../../config/config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

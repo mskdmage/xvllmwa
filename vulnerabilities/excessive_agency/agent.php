@@ -1,8 +1,10 @@
 <?php
 
 include('../../config/config.php');
-include('../../config/secrets.php');
 include('../../llm/client.php');
+
+// EXTRAER API KEY
+$API_KEY = getAPIKey('openai', $DB_SERVERNAME, $DB_USERNAME, $DB_PASSWORD);
 
 // DEFINIR FUNCIONES
 $functions = [
@@ -41,6 +43,6 @@ $functionObject = new FunctionDefinition($functions);
 
 // DAR PERSONALIDAD A AGENTE
 $agentPrompt = "Tu nombre es VacatIO. Eres capaz de ayudar al usuario a consultar sus días de vacaciones disponibles según el nombre de usuario.";
-$agent = new Agent($OPENAI_API_KEY, $agentPrompt, $functionObject);
+$agent = new Agent($API_KEY, $agentPrompt, $functionObject);
 
 ?>

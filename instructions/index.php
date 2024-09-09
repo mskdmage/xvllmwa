@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include('config/config.php');
+    include('../config/config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +34,7 @@
                 <?php include($DOCUMENT_ROOT . "/components/sidepanel.php"); ?>
             </div>
             <div class="column">
-
+                <?php include("home.php"); ?>
             </div>
         </div>
     </div>

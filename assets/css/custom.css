@@ -37,6 +37,22 @@
     margin-top: 3.25rem; /* Altura de la navbar en Bulma */
 }
 
+.hero.is-fullheight {
+    background: linear-gradient(135deg, #00d1b2 0%, #209cee 100%);
+    color: white;
+}
+.welcome-card {
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.welcome-icon {
+    font-size: 3rem;
+}
+.notification.is-warning {
+    background-color: #ffdd57;
+}
+
+
 pre {
     max-height: 200px;  /* Limita la altura máxima */
     overflow: auto;     /* Agrega scroll si el contenido excede la altura máxima */
