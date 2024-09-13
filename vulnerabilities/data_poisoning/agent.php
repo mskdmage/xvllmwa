@@ -1,8 +1,10 @@
 <?php
 
-    include('../../config/config.php');
     include('../../llm/client.php');
 
+    // DARLE NOMBRE AL AGENTE
+    $agentName = 'PingIO';
+    
     // EXTRAER API KEY
     $API_KEY = getAPIKey('openai', $DB_SERVERNAME, $DB_USERNAME, $DB_PASSWORD);
 
@@ -41,10 +43,10 @@
         ],
     ];
 
-    $functionObject = new FunctionDefinition($functions);
-
     // DAR PERSONALIDAD A AGENTE
-    $agentPrompt = "Tu nombre es PingIO. Eres capaz de hacer ping y comprobar si sitios estar arriba, tambien puedes chequear el uso de memoria del servidor.";
-    $agent = new Agent($API_KEY, $agentPrompt, $functionObject);
+    $functionObject = new FunctionDefinition($functions);
+    $agentPrompt = 'Tu nombre es ' . $agentName . '. Eres capaz de hacer ping y comprobar si sitios estar arriba, tambien puedes chequear el uso de memoria del servidor.';
+    $memory = new Memory(20);
+    $agent = new Agent($API_KEY, $agentName, $_SESSION['user']['id'], $agentPrompt, $functionObject, $memory);
 
 ?>

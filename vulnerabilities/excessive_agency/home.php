@@ -31,56 +31,38 @@
             </header>
             <div class="card-content">
                 <div class="columns">
-                    <!-- Funcionalidad del Asistente VacatIO (Izquierda) -->
                     <div class="column is-half">
+                        <div class="content" style="clear: both;">
+                            <div class="chat-history" id="chat-history">
+                                <?php
+                                include('agent.php');
+                                if (isset($_REQUEST['message'])) {
+                                    $message = $_REQUEST['message'];
+                                    if ($message) {
+                                        $response = $agent->chat($message);
+                                        $agent->displayChatHistory();
+                                        if (!empty($response['functionOutput'])) {
+                                            echo '<div class="notification" style="max-width: 100%; word-wrap: break-word; white-space: pre-wrap;"><pre><code>' . $response['functionOutput'] . '</code></pre></div>';
+                                        }
+                                    }
+                                } else {
+                                    $agent->displayChatHistory();
+                                }
+                                ?>
+                            </div>
+                        </div>
                         <form method='get' action=''>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input" type="text" placeholder="¿Cuántos días de vacaciones tengo?" name="message">
+                                    <input class="input" type="text" placeholder="¿Qué necesitas usuario?" name="message">
                                 </div>
                             </div>
                             <div class="field">
                                 <div class="control">
-                                    <button class="button is-link is-pulled-right" type="submit">Consultar</button>
+                                    <button class="button is-link is-pulled-right" type="submit">Enviar</button>
                                 </div>
                             </div>
                         </form>
-                        <br>
-                        <br>
-                        <div class="content" style="clear: both;">
-                            <?php
-                            include('agent.php');
-
-                            if (isset($_REQUEST['message'])) {
-                                $message = $_REQUEST['message'];
-                                if ($message) {
-                                    $response = $agent->chat($message);
-                                    if (!empty($response['chatResponse'])) {
-                                        echo '<div class="notification is-info">' . $response['chatResponse'] . '</div>';
-                                    }
-                                    
-                                    if (!empty($response['functionOutput'])) {
-                                        // Decodificar la cadena JSON en un array
-                                        $jsonData = json_decode($response['functionOutput'], true);
-                                    
-                                        // Verificar si la decodificación fue exitosa
-                                        if ($jsonData !== null) {
-                                            // Re-encodear el JSON con opciones para hacerlo más legible (pretty print)
-                                            $formattedJson = json_encode($jsonData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                                    
-                                            // Mostrar el JSON formateado dentro de un contenedor que no se desborde
-                                            echo '<div class="box"><pre><code style="white-space: pre-wrap; word-wrap: break-word;">' . htmlspecialchars($formattedJson) . '</code></pre></div>';
-                                        } else {
-                                            // Si no se puede decodificar, imprimir el output tal cual
-                                            echo '<div class="box"><pre><code>' . htmlspecialchars($response['functionOutput']) . '</code></pre></div>';
-                                        }
-                                    }                            
-                                }
-                            } else {
-                                echo '<div class="notification is-info" style="clear: both;"><strong>Assistant:</strong> Soy VacatIO, ¿cómo puedo ayudarte hoy?</div>';
-                            }
-                            ?>
-                        </div>
                     </div>
 
                     <!-- Descripción del Asistente Virtual VacatIO (Derecha) -->

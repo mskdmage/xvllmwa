@@ -34,7 +34,7 @@
 }
 
 .main-content {
-    margin-top: 3.25rem; /* Altura de la navbar en Bulma */
+    margin-top: 3.25rem;
 }
 
 .hero.is-fullheight {
@@ -52,13 +52,34 @@
     background-color: #ffdd57;
 }
 
+.notification-container {
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px 0;
+    clear: both;
+}
+
+.notification-container.assistant {
+    justify-content: flex-end;
+}
+
+.notification {
+    width: 90%;
+}
+
+.chat-history {
+    max-height: 400px;
+    overflow-y: scroll;
+    padding-right: 10px;
+}
+
 
 pre {
-    max-height: 200px;  /* Limita la altura máxima */
-    overflow: auto;     /* Agrega scroll si el contenido excede la altura máxima */
-    word-wrap: break-word; /* Permite el quiebre de palabras largas */
-    white-space: pre-wrap; /* Mantiene los espacios en blanco y permite el quiebre de línea */
-    background-color: #f5f5f5; /* Color de fondo para diferenciar el bloque de código */
-    padding: 10px;      /* Espaciado dentro del bloque */
-    border-radius: 5px; /* Bordes redondeados */
+    max-height: 200px;
+    overflow: auto;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
 }

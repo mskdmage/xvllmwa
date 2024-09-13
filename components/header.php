@@ -15,7 +15,7 @@
                 <div class="navbar-item has-dropdown is-hoverable">
                     <?php
                         if (isset($_SESSION['user'])) {
-                            echo "<a href='#' class='navbar-link'>" . ucfirst($_SESSION['user']) . "</a>";
+                            echo "<a href='#' class='navbar-link'>" . ucfirst($_SESSION['user']['full_name']) . "</a>";
                             echo "<div class='navbar-dropdown is-right'>";
                             echo "<a class='navbar-item' href='" . $WEBROOT . "/logout.php'>Cerrar sesión</a>";
                             echo "</div>";

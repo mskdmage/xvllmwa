@@ -12,23 +12,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT password FROM users WHERE username = ?");
+    // Modificamos la consulta para obtener también id, role, full_name y department
+    $stmt = $conn->prepare("SELECT id, password, role, full_name, department FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
-    
+
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($hashed_password);
+        // Vinculamos los resultados
+        $stmt->bind_result($id, $hashed_password, $role, $full_name, $department);
         $stmt->fetch();
         
+        // Verificamos la contraseña
         if (password_verify($password, $hashed_password)) {
-            $_SESSION['user'] = $username;
+            // Almacenar los detalles en la sesión
+            $_SESSION['user'] = [
+                'id' => $id,
+                'username' => $username,
+                'role' => $role,
+                'full_name' => $full_name,
+                'department' => $department
+            ];
+
+            // Redirigir al usuario a la página de instrucciones
             header("Location: /xvllmwa/instructions");
             exit();
         } else {
+            // Contraseña incorrecta
             header("Location: /xvllmwa/instructions");
         }
     } else {
+        // Usuario no encontrado
         header("Location: /xvllmwa/instructions");
     }
 

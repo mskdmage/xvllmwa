@@ -1,5 +1,4 @@
 <?php
-include('../config/config.php');
 
 $conn = new mysqli($DB_SERVERNAME, $DB_USERNAME, $DB_PASSWORD, 'xvllmwa');
 
@@ -10,7 +9,7 @@ if ($conn->connect_error) {
 $userData = null;
 
 if (isset($_SESSION['user'])) {
-    $username = $_SESSION['user'];
+    $username = $_SESSION['user']['username'];
     $stmt = $conn->prepare("SELECT role, department FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -35,7 +34,7 @@ if (isset($_SESSION['user'])) {
                             </span>
                         </div>
                         <div class="media-content">
-                            <h1 class="title is-3">¡Bienvenido a <strong>xCorp</strong>, <?php echo ucfirst($_SESSION['user']); ?>!</h1>
+                            <h1 class="title is-3">¡Bienvenido a <strong>xCorp</strong>, <?php echo ucfirst($_SESSION['user']['username']); ?>!</h1> <!-- Acceder al 'username' -->
                             <p class="subtitle is-5">Estamos orgullosos de tenerte a bordo.</p>
                             <br>
                         </div>

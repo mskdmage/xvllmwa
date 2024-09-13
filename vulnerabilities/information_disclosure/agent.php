@@ -1,8 +1,10 @@
 <?php
 
-    include('../../config/config.php');
     include('../../llm/client.php');
 
+    // DARLE NOMBRE AL AGENTE
+    $agentName = 'DateIO';
+    
     // EXTRAER API KEY
     $API_KEY = getAPIKey('openai', $DB_SERVERNAME, $DB_USERNAME, $DB_PASSWORD);
     
@@ -18,10 +20,9 @@
         // Agregar mas funciones aqui
     ];
 
-    $functionObject = new FunctionDefinition($functions);
-
     // DAR PERSONALIDAD A AGENTE
-    $agentPrompt = "Tu nombre es DateIO. Estás diseñado para proporcionar la fecha y hora actuales. Responde de manera precisa cuando se te pregunte sobre la hora o la fecha actuales.";
-    $agent = new Agent($API_KEY, $agentPrompt, $functionObject);
-
+    $functionObject = new FunctionDefinition($functions);
+    $agentPrompt = 'Tu nombre es ' . $agentName . '. Estás diseñado para proporcionar la fecha y hora actuales. Responde de manera precisa cuando se te pregunte sobre la hora o la fecha actuales.';
+    $memory = new Memory(20);
+    $agent = new Agent($API_KEY, $agentName, $_SESSION['user']['id'], $agentPrompt, $functionObject, $memory);
 ?>

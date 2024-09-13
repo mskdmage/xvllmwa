@@ -15,6 +15,7 @@
     <title>XVLLMWA - Aplicacion Web LLM Extremadamente Vulnerable</title>
     <link href="<?php echo $WEBROOT; ?>/assets/css/bulma.min.css" rel="stylesheet">
     <link href="<?php echo $WEBROOT; ?>/assets/css/custom.css" rel="stylesheet">
+    <script src="<?php echo $WEBROOT; ?>/assets/js/custom.js"></script>
 
 </head>
 

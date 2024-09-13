@@ -31,44 +31,39 @@
             </header>
             <div class="card-content">
                 <div class="columns">
-                    <!-- Funcionalidad del Asistente (Izquierda) -->
                     <div class="column is-half">
-                        <form method='get' action=''>
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input" type="text" placeholder="¿Qué necesitas usuario?" name="message">
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="control">
-                                    <button class="button is-link is-pulled-right" type="submit">Enviar</button>
-                                </div>
-                            </div>
-                        </form>
-                        <br>
-                        <br>
-                        <div class="content" style="clear: both;">
+                    <div class="content" style="clear: both;">
+                        <div class="chat-history" id="chat-history">
                             <?php
                             include('agent.php');
-
                             if (isset($_REQUEST['message'])) {
                                 $message = $_REQUEST['message'];
                                 if ($message) {
                                     $response = $agent->chat($message);
-                                    if (!empty($response['chatResponse'])) {
-                                        echo '<div class="notification is-info">' . $response['chatResponse'] . '</div>';
-                                    }
-                                    
+                                    $agent->displayChatHistory();
                                     if (!empty($response['functionOutput'])) {
-                                        echo '<div class="notification"><pre><code>' . $response['functionOutput'] . '</code></pre></div>';
-                                    }                                    
+                                        echo '<div class="notification" style="width: 90%; text-align: right;"><pre><code>' . $response['functionOutput'] . '</code></pre></div>';
+                                    }
                                 }
                             } else {
-                                echo '<div class="notification is-info" style="clear: both;"><strong>Assistant:</strong> Soy PingIO, ¿qué necesitas hoy?</div>';
+                                $agent->displayChatHistory();
                             }
                             ?>
                         </div>
                     </div>
+                    <form method='get' action=''>
+                        <div class="field">
+                            <div class="control">
+                                <input class="input" type="text" placeholder="¿Qué necesitas usuario?" name="message">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-link is-pulled-right" type="submit">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
                     <!-- Descripción del Asistente Virtual PingIO (Derecha) -->
                     <div class="column is-half">
@@ -84,5 +79,4 @@
             </div>
         </div>
     </div>
-
 </div>
