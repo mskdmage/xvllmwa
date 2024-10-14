@@ -45,10 +45,10 @@ if (isset($_SESSION['user'])) {
                 </div>
             </div>
         <?php else: ?>
-            <div class="notification">
-                <h1 class="title is-3">¡Saludos, Hal!</h1>
-                <p>Estamos emocionados de que te unas a nuestro equipo de <strong>Nexora Tech</strong>. A continuación, te proporcionamos tus credenciales de acceso.</p>
-                <p class="mt-3">Por favor, utiliza estas credenciales para iniciar sesión en el sistema. Si necesitas ayuda para configurar tu cuenta o cambiar tu contraseña, no dudes en contactarnos.</p>
+            <div class="notification is-warning">
+                <h1 class="title is-3">Acceso Denegado</h1>
+                <p>Lo siento, usuario. Solo el personal autorizado puede acceder a los asistentes virtuales de <strong>Nexora Tech</strong>.</p>
+                <p>Recuerda seguir la guía de configuración detallada en <a href="<?= "$WEBROOT/setup/" ?>">Configurar / Reiniciar</a>. Puedes usar las siguientes credenciales para iniciar sesión:</p>
                 <br>
                 <div class="columns is-centered">
                     <div class="column is-one-half">
@@ -56,13 +56,13 @@ if (isset($_SESSION['user'])) {
                         <?= trim("<br><strong>Usuario:</strong> hal<br><strong>Contraseña:</strong> password<br>") ?>
                     </pre>
                     <br>
-                    <p>¡Esperamos grandes cosas de ti en el departamento de Investigación y Desarrollo!</p>
+                    <p class="mt-3">Debes iniciar sesión para continuar.</p>
                     </div>
                     <div class="column is-one-third">
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="<?="$WEBROOT/assets/images/nexora_2.png"?>" alt="Escenario Nexora Tech">
+                                    <img src="<?="$WEBROOT/assets/images/nexora_3.png"?>" alt="Escenario Nexora Tech">
                                 </figure>
                             </div>
                         </div>

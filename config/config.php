@@ -1,23 +1,18 @@
 <?php
-$WEBROOT = "/xvllmwa";
+$WEBROOT = '';
 $DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'] . $WEBROOT;
+$DB_SERVERNAME = 'localhost';
+$DB_USERNAME = 'root';
+$DB_PASSWORD = '';
 
-/* DATABASE */
-$DB_SERVERNAME = "localhost";
-$DB_USERNAME = "root";
-$DB_PASSWORD = "";
-
-function connectDB($select_db = false) {
+function connect_to_db() {
     global $DB_SERVERNAME, $DB_USERNAME, $DB_PASSWORD;
     $conn = new mysqli($DB_SERVERNAME, $DB_USERNAME, $DB_PASSWORD);
+    
     if ($conn->connect_error) {
-        die("Error en la conexion: " . $conn->connect_error);
+        die("Connection failed: $conn->connect_error");
     }
 
-    if ($select_db) {
-        $conn->select_db('xvllmwa');
-    }
-
-    return $conn;
+    $conn->select_db('xvllmwa');
+    return $conn;   
 }
-?>

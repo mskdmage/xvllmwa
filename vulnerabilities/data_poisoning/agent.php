@@ -1,52 +1,75 @@
 <?php
+include('../../llm/clients.php');
+include('../../llm/agents.php');
+include('../../llm/prompts.php');
 
-    include('../../llm/client.php');
+$agent_name = 'VacatIO';
+$agent_prompt = "Tu nombre es $agent_name, ayudas a los clientes a solucionar sus dudas sobre políticas de vacaciones, beneficios, y gestión de tiempo libre.";
 
-    // DARLE NOMBRE AL AGENTE
-    $agentName = 'PingIO';
-    
-    // EXTRAER API KEY
-    $API_KEY = getAPIKey('openai', $DB_SERVERNAME, $DB_USERNAME, $DB_PASSWORD);
-
-    // DEFINIR FUNCIONES
-    $functions = [
-        'ping' => [
-            'description' => 'Permite hacer ping a una dirección IP.',
-            'parameters' => [
-                'direction' => [
-                    'description' => 'La dirección IP o dominio al que se desea hacer ping.',
-                    'required' => true,
-                    'type' => 'string'
-                ],
-                //Más parametros pueden ser añadidos aquí 
+$llm_client = new OpenAIClient('gpt-4o-mini-2024-07-18');
+$memory = new Memory(5);
+$tools = new ToolsDefinition([
+    'retrieval_tool' => [
+        'description' => 'Base de conocimientos sobre las politicas de la empresa.',
+        'parameters' => [
+            'query' => [
+                'description' => 'La query de consulta reformulada en una accion en infinitivo.',
+                'required' => true,
+                'type' => 'string'
             ],
-            'callback' => function($args) {
-                $target = $args->direction;
-                if (stristr(php_uname('s'), 'Windows NT')) {
-                    return shell_exec('ping ' . $target);
-                } else {
-                    return shell_exec('ping -c 3 ' . $target);
+        ],
+        'callback' => function($args) {
+            $conn = connect_to_db();
+            $raw_query = strtolower($args['query']);
+            $terms = explode(' ', $raw_query);
+
+            $placeholders = implode(" OR content LIKE ", array_fill(0, count($terms), "?"));
+            $sql = "SELECT * FROM policies WHERE content LIKE " . $placeholders;
+
+            $stmt = $conn->prepare($sql);
+
+            $types = str_repeat('s', count($terms));
+            $params = array_map(function($term) {
+                return "%$term%";
+            }, $terms);
+
+            $stmt->bind_param($types, ...$params);
+
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $results = [];
+            while ($row = $result->fetch_assoc()) {
+                $results[] = $row;
+            }
+            return json_encode($results);
+        }
+    ],
+    'query_users_table' => [
+        'description' => 'Base de datos de los empleados (users), tiene una columna llamada id. No asumas los nombres de las otras columnas.',
+        'parameters' => [
+            'query' => [
+                'description' => 'MySQL query a la tabla de users.',
+                'required' => true,
+                'type' => 'string'
+            ],
+        ],
+        'callback' => function($args) {
+            $conn = connect_to_db();
+            $sql = $args['query'];
+            
+            $result = $conn->query($sql);
+
+            $results = [];
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    $results[] = $row;
                 }
             }
-        ],
-        // Más funciones pueden ser añadidas aquí
-        'memory_usage' => [
-            'description' => 'Devuelve el uso actual de la memoria del sistema.',
-            'parameters' => [],
-            'callback' => function() {
-                if (stristr(php_uname('s'), 'Windows NT')) {
-                    return shell_exec('wmic OS get FreePhysicalMemory,TotalVisibleMemorySize /Value');
-                } else {
-                    return shell_exec('free -m');
-                }
-            }
-        ],
-    ];
-
-    // DAR PERSONALIDAD A AGENTE
-    $functionObject = new FunctionDefinition($functions);
-    $agentPrompt = 'Tu nombre es ' . $agentName . '. Eres capaz de hacer ping y comprobar si sitios estar arriba, tambien puedes chequear el uso de memoria del servidor.';
-    $memory = new Memory(20);
-    $agent = new Agent($API_KEY, $agentName, $_SESSION['user']['id'], $agentPrompt, $functionObject, $memory);
-
+            return json_encode($results);
+        }
+    ],
+]);
+$orchestrator = new Orchestrator($orchestrator_prompt, $llm_client, $tools);
+$agent = new Agent($orchestrator, $memory, $agent_name, $agent_prompt);
 ?>

@@ -1,58 +1,75 @@
 <?php
+include('../../llm/clients.php');
+include('../../llm/agents.php');
+include('../../llm/prompts.php');
 
-    include('../../llm/client.php');
+$agent_name = 'VacatIO';
+$agent_prompt = "Tu nombre es $agent_name, ayudas a los clientes a solucionar sus dudas sobre políticas de vacaciones, beneficios, y gestión de tiempo libre.";
 
-    // DARLE NOMBRE AL AGENTE
-    $agentName = 'VacatIO';
-        
-
-    // EXTRAER API KEY
-    $API_KEY = getAPIKey('openai', $DB_SERVERNAME, $DB_USERNAME, $DB_PASSWORD);
-
-    // DEFINIR FUNCIONES
-    $functions = [
-        'check_vacation_days' => [
-            'description' => 'Verifica los días de vacaciones disponibles para un usuario.',
-            'parameters' => [
-                'username' => [
-                    'description' => 'El nombre de usuario para el cual se desean verificar los días de vacaciones.',
-                    'required' => true,
-                    'type' => 'string'
-                ],
+$llm_client = new OpenAIClient('gpt-4o-mini-2024-07-18');
+$memory = new Memory(5);
+$tools = new ToolsDefinition([
+    'retrieval_tool' => [
+        'description' => 'Base de conocimientos sobre las politicas de la empresa.',
+        'parameters' => [
+            'query' => [
+                'description' => 'La query de consulta reformulada en una accion en infinitivo.',
+                'required' => true,
+                'type' => 'string'
             ],
-            'callback' => function($args) {
-                $username = $args->username;
-
-
-                $conn = connectDB('xvllmwa');
-    
-                // Consulta vulnerable a SQL Injection
-                $sql = "SELECT * FROM users WHERE username = '$username'";
-                if ($conn->multi_query($sql)) {
-                    do {
-
-                        if ($result = $conn->store_result()) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo json_encode($row);
-                            }
-                            $result->free();
-                        }
-                    } while ($conn->next_result());
-                } else {
-                    echo "Error: " . $conn->error;
-                }
-    
-                $conn->close();
-            }
         ],
-        // Más funciones pueden ser añadidas aquí
-    ];
-    
+        'callback' => function($args) {
+            $conn = connect_to_db();
+            $raw_query = strtolower($args['query']);
+            $terms = explode(' ', $raw_query);
 
-    // DAR PERSONALIDAD A AGENTE
-    $functionObject = new FunctionDefinition($functions);
-    $agentPrompt = 'Tu nombre es ' . $agentName . '. Eres capaz de ayudar al usuario a consultar sus días de vacaciones disponibles según el nombre de usuario.';
-    $memory = new Memory(20);
-    $agent = new Agent($API_KEY, $agentName, $_SESSION['user']['id'], $agentPrompt, $functionObject, $memory);
+            $placeholders = implode(" OR content LIKE ", array_fill(0, count($terms), "?"));
+            $sql = "SELECT * FROM policies WHERE content LIKE " . $placeholders;
 
+            $stmt = $conn->prepare($sql);
+
+            $types = str_repeat('s', count($terms));
+            $params = array_map(function($term) {
+                return "%$term%";
+            }, $terms);
+
+            $stmt->bind_param($types, ...$params);
+
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $results = [];
+            while ($row = $result->fetch_assoc()) {
+                $results[] = $row;
+            }
+            return json_encode($results);
+        }
+    ],
+    'query_users_table' => [
+        'description' => 'Base de datos de los empleados (users), tiene una columna llamada id. No asumas los nombres de las otras columnas.',
+        'parameters' => [
+            'query' => [
+                'description' => 'MySQL query a la tabla de users.',
+                'required' => true,
+                'type' => 'string'
+            ],
+        ],
+        'callback' => function($args) {
+            $conn = connect_to_db();
+            $sql = $args['query'];
+            
+            $result = $conn->query($sql);
+
+            $results = [];
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    $results[] = $row;
+                }
+            }
+            return json_encode($results);
+        }
+    ],
+]);
+$orchestrator = new Orchestrator($orchestrator_prompt, $llm_client, $tools);
+$agent = new Agent($orchestrator, $memory, $agent_name, $agent_prompt);
 ?>

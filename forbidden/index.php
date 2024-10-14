@@ -1,10 +1,6 @@
 <?php
 session_start();
-include('../../config/config.php');
-if (!isset($_SESSION['user'])) {
-    header("Location: $WEBROOT/forbidden");
-    exit();
-}
+include('../config/config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,11 +9,12 @@ if (!isset($_SESSION['user'])) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Extreme Vulnerable LLM Web Application">
+    <meta name="description" content="Extreme Vulnerable LLLM Web Application">
     <meta name="author" content="G2">
-    <title>XVLLMWA - Prompt Injection</title>
+    <title>XVLLMWA - Forbidden</title>
     <link href="<?= "$WEBROOT/assets/css/bulma.min.css"; ?>" rel="stylesheet">
     <link href="<?= "$WEBROOT/assets/css/custom.css"; ?>" rel="stylesheet">
+
 </head>
 
 <body>
@@ -46,7 +43,6 @@ if (!isset($_SESSION['user'])) {
     </footer>
 
     <script src="<?= "$WEBROOT/assets/js/jquery.js" ?>"></script>
-    <script src="<?= "$WEBROOT/assets/js/custom.js" ?>"></script>
 
 </body>
 
