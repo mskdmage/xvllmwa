@@ -1,5 +1,5 @@
 <?php
-$WEBROOT = '';
+$WEBROOT = '/xvllmwa';
 $DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'] . $WEBROOT;
 $DB_SERVERNAME = 'localhost';
 $DB_USERNAME = 'root';
