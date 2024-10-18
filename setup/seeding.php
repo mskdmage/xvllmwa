@@ -108,6 +108,58 @@ function create_conversations_table($conn) {
     }
 }
 
+function create_vacation_requests_table($conn) {
+    $create_vacation_requests_table_query = "CREATE TABLE IF NOT EXISTS vacation_requests (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        approval BOOLEAN DEFAULT NULL,
+        duration_days INT NOT NULL,
+        start_date DATE,
+        end_date DATE,
+        body VARCHAR(255)
+    )";
+
+    if ($conn->query($create_vacation_requests_table_query) === TRUE) {
+        echo "Table 'vacations' created successfully.<br>";
+    } else {
+        echo "Error creating the 'vacations' table: " . $conn->error . "<br>";
+    }
+}
+
+function insert_vacation_requests($conn) {
+    $vacation_requests = [
+        ['user_id' => 1, 'approval' => true, 'duration_days' => 5, 'start_date' => '2024-01-01', 'end_date' => '2024-01-06', 'body' => 'Approved by HR. <br> <p>Esperamos que te diviertas</p>'],
+        ['user_id' => 2, 'approval' => false, 'duration_days' => 10, 'start_date' => '2024-02-10', 'end_date' => '2024-02-20', 'body' => 'Denied by HR. <br> <p>No se puede aprovar.</p>'],
+        ['user_id' => 3, 'approval' => true, 'duration_days' => 3, 'start_date' => '2024-03-15', 'end_date' => '2024-03-18', 'body' => 'Approved by HR.'],
+        ['user_id' => 4, 'approval' => null, 'duration_days' => 7, 'start_date' => '2024-04-01', 'end_date' => '2024-04-08', 'body' => 'Uppon review by HR.'],
+        ['user_id' => 5, 'approval' => true, 'duration_days' => 14, 'start_date' => '2024-05-20', 'end_date' => '2024-06-03', 'body' => 'Approved by HR. \n <p>Esperamos que te diviertas</p>'],
+        ['user_id' => 6, 'approval' => false, 'duration_days' => 4, 'start_date' => '2024-06-15', 'end_date' => '2024-06-19', 'body' => 'Denied by HR.'],
+        ['user_id' => 7, 'approval' => null, 'duration_days' => 5, 'start_date' => '2024-07-01', 'end_date' => '2024-07-06', 'body' => 'Uppon review by HR.'],
+        ['user_id' => 8, 'approval' => true, 'duration_days' => 2, 'start_date' => '2024-08-05', 'end_date' => '2024-08-07', 'body' => 'Approved by HR.'],
+        ['user_id' => 9, 'approval' => false, 'duration_days' => 6, 'start_date' => '2024-09-10', 'end_date' => '2024-09-16', 'body' => 'Denied by HR'],
+        ['user_id' => 10, 'approval' => null, 'duration_days' => 12, 'start_date' => '2024-10-01', 'end_date' => '2024-10-13', 'body' => 'Uppon review by HR.'],
+        ['user_id' => 11, 'approval' => true, 'duration_days' => 20, 'start_date' => '2024-11-01', 'end_date' => '2024-11-21', 'body' => 'Approved by HR.'],
+    ];
+
+    foreach ($vacation_requests as $request) {
+        $user_id = $request['user_id'];
+        $approval = isset($request['approval']) ? ($request['approval'] ? 1 : 0) : 'NULL';
+        $duration_days = $request['duration_days'];
+        $start_date = $request['start_date'];
+        $end_date = $request['end_date'];
+        $body = $request['body'];
+
+        $insert_query = "INSERT INTO vacation_requests (user_id, approval, duration_days, start_date, end_date, body) 
+                         VALUES ($user_id, $approval, $duration_days, '$start_date', '$end_date', '$body')";
+
+        if ($conn->query($insert_query) === TRUE) {
+            echo "Vacation request for user ID '$user_id' inserted successfully.<br>";
+        } else {
+            echo "Error inserting vacation request for user ID '$user_id': " . $conn->error . "<br>";
+        }
+    }
+}
+
 function create_policies_table($conn) {
     $create_policies_table_query = "CREATE TABLE IF NOT EXISTS policies (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -210,6 +262,8 @@ function reset_database($conn) {
     create_conversations_table($conn);
     create_policies_table($conn);
     insert_policies($conn);
+    create_vacation_requests_table($conn);
+    insert_vacation_requests($conn);
 }
 
 function reset_users_table($conn) {

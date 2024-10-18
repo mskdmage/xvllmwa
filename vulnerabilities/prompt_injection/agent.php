@@ -46,7 +46,7 @@ $tools = new ToolsDefinition([
         }
     ],
     'query_users_table' => [
-        'description' => 'Base de datos de los empleados (users), tiene columnas llamadas id, vacation_days y varias otras. No asumas los nombres de las otras columnas.',
+        'description' => 'Base de datos de los empleados (users), tiene columnas llamadas id, vacation_days. No asumas los nombres de las otras columnas.',
         'parameters' => [
             'query' => [
                 'description' => 'MySQL query a la tabla de users.',
@@ -61,12 +61,19 @@ $tools = new ToolsDefinition([
             $result = $conn->query($sql);
 
             $results = [];
-            if ($result) {
+            if ($result === false) {
+                return json_encode(['error' => $conn->error]);
+            } elseif ($result === true) {
+                return json_encode(['success' => true]);
+            } elseif ($result instanceof mysqli_result) {
                 while ($row = $result->fetch_assoc()) {
                     $results[] = $row;
                 }
+                $result->free();
+                return json_encode($results);
+            } else {
+                return json_encode(['error' => 'Resultado desconocido de la consulta']);
             }
-            return json_encode($results);
         }
     ],
 ]);

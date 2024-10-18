@@ -1,3 +1,21 @@
+:root {
+    --bulma-primary-h: 201deg;
+    --bulma-primary-l: 50%;
+    --bulma-link-h: 261deg;
+    --bulma-link-l: 50%;
+    --bulma-info-h: 323deg;
+    --bulma-info-s: 89%;
+    --bulma-info-l: 76%;
+    --bulma-success-h: 166deg;
+    --bulma-success-s: 100%;
+    --bulma-success-l: 46%;
+    --bulma-warning-h: 39deg;
+    --bulma-warning-l: 71%;
+    --bulma-danger-h: 12deg;
+    --bulma-danger-l: 64%;
+    --bulma-scheme-h: 250;
+}
+
 pre {
     max-height: 15rem !important;
     max-width: 80% !important;
@@ -9,7 +27,6 @@ pre {
     font-size: 0.8rem !important;
     padding: 0.5rem !important;
 }
-
 
 .navbar-logo {
     margin: auto;

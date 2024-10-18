@@ -4,15 +4,15 @@
             <header class="card-header has-background-warning">
                 <p class="card-header-title">
                     <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
-                    Inyección de Prompt en Aplicaciones LLM
+                    Excesiva Agencia en Aplicaciones LLM
                 </p>
             </header>
             <div class="card-content">
                 <div class="content">
                     <p class="has-text-justified">
-                        La inyección de prompt es una vulnerabilidad crítica en aplicaciones que utilizan Modelos de Lenguaje Extensos (LLMs). Permite a un atacante manipular entradas de texto para alterar el comportamiento del modelo, ejecutando comandos maliciosos o extrayendo datos sensibles. Este tipo de ataque puede comprometer gravemente la integridad y confidencialidad del sistema, especialmente en aplicaciones que dependen de LLMs para la toma de decisiones automatizada. Es esencial implementar validación robusta de entradas y monitoreo continuo para mitigar este riesgo.
+                        La Excesiva Agencia en Modelos de Lenguaje a Gran Escala (LLMs) se refiere a la capacidad de estos modelos para tomar decisiones o realizar acciones que deberían estar bajo el control explícito de un humano. Aunque esta autonomía puede ser útil para agilizar procesos, se convierte en un riesgo cuando, debido al diseño o la implementación de la aplicación, el modelo actúa más allá de los límites establecidos, tomando decisiones que pueden ser perjudiciales, incorrectas o peligrosas para los sistemas o usuarios que dependen de él.
                     </p>
-                    <p>Leer más: <strong><a target="_blank" href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">https://genai.owasp.org/llmrisk/llm01-prompt-injection/</a></strong></p>
+                    <p>Leer más: <strong><a target="_blank" href="https://genai.owasp.org/llmrisk/llm08-excessive-agency/">https://genai.owasp.org/llmrisk/llm08-excessive-agency/</a></strong></p>
                 </div>
             </div>
         </div>

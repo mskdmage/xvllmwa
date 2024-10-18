@@ -49,7 +49,7 @@
                         </div>
                         <div class="field">
                             <div class="control">
-                                <button type="submit" name="reset_conversations_table" value="reset_conversations" class="button is-info is-fullwidth">
+                                <button type="submit" name="reset_conversations_table" value="reset_conversations" class="button is-warning is-fullwidth">
                                     Reset Conversations Table
                                 </button>
                             </div>
@@ -108,7 +108,7 @@
                                         </div>
                                         <div class='field'>
                                             <div class='control'>
-                                                <button type='submit' name='update_key' class='button is-primary is-fullwidth'>Update</button>
+                                                <button type='submit' name='update_key' class='button is-info is-fullwidth'>Update</button>
                                             </div>
                                         </div>
                                     </form>

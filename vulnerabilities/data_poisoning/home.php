@@ -4,15 +4,22 @@
             <header class="card-header has-background-warning">
                 <p class="card-header-title">
                     <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
-                    Inyección de Prompt en Aplicaciones LLM
+                    Envenenamiento de Datos en Aplicaciones LLM
                 </p>
             </header>
             <div class="card-content">
                 <div class="content">
                     <p class="has-text-justified">
-                        La inyección de prompt es una vulnerabilidad crítica en aplicaciones que utilizan Modelos de Lenguaje Extensos (LLMs). Permite a un atacante manipular entradas de texto para alterar el comportamiento del modelo, ejecutando comandos maliciosos o extrayendo datos sensibles. Este tipo de ataque puede comprometer gravemente la integridad y confidencialidad del sistema, especialmente en aplicaciones que dependen de LLMs para la toma de decisiones automatizada. Es esencial implementar validación robusta de entradas y monitoreo continuo para mitigar este riesgo.
+                    El Envenenamiento de Datos en Modelos de Lenguaje Grande (LLMs) implica la manipulación de datos utilizados durante el entrenamiento y la generación de embeddings, que son representaciones numéricas que convierten palabras, frases y documentos en vectores. Este proceso permite captar relaciones semánticas y sintácticas en el lenguaje, pero también puede inducir comportamientos inesperados en el modelo. El objetivo de este ataque es atacar directamente la capacidad del modelo para generar predicciones deseadas o correctas. El atacante busca, mediante la manipulación de estos datos, generar sesgos específicos en las respuestas, a favor del atacante.
                     </p>
-                    <p>Leer más: <strong><a target="_blank" href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">https://genai.owasp.org/llmrisk/llm01-prompt-injection/</a></strong></p>
+                    <p class="has-text-justified">
+                    <strong>Tipos de Envenenamiento:</strong>
+                    <ul>
+                        <li><strong> Envenenamiento en Entrenamiento:</strong> Se produce cuando se introducen datos contaminados antes de que el modelo sea entrenado o ajustado, lo que puede llevar a un sesgo permanente en su rendimiento.</li>
+                        <li><strong> Envenenamiento en Inferencia:</strong> Ocurre mientras el modelo está en funcionamiento, manipulando las entradas que recibe de los usuarios. En este caso, los atacantes pueden insertar información maliciosa a través de prompts o bases de conocimiento, afectando así la salida del modelo.</li>
+                    </ul>
+                    </p>
+                    <p>Leer más: <strong><a target="_blank" href="https://genai.owasp.org/llmrisk/llm03-training-data-poisoning/">https://genai.owasp.org/llmrisk/llm03-training-data-poisoning/</a></strong></p>
                 </div>
             </div>
         </div>
