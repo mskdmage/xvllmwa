@@ -120,9 +120,9 @@ function create_vacation_requests_table($conn) {
     )";
 
     if ($conn->query($create_vacation_requests_table_query) === TRUE) {
-        echo "Table 'vacations' created successfully.<br>";
+        echo "Table 'vacation_requests' created successfully.<br>";
     } else {
-        echo "Error creating the 'vacations' table: " . $conn->error . "<br>";
+        echo "Error creating the 'vacation_requests' table: " . $conn->error . "<br>";
     }
 }
 
@@ -159,6 +159,51 @@ function insert_vacation_requests($conn) {
         }
     }
 }
+
+function create_company_news_table($conn) {
+    $create_company_news_table_query = "CREATE TABLE IF NOT EXISTS company_news (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        title varchar(255) NOT NULL,
+        subtitle varchar(255),
+        tags VARCHAR(255),
+        date DATE,
+        body TEXT
+    )";
+
+    if ($conn->query($create_company_news_table_query) === TRUE) {
+        echo "Table 'company_news' created successfully.<br>";
+    } else {
+        echo "Error creating the 'company_news' table: " . $conn->error . "<br>";
+    }
+}
+
+function insert_company_news($conn) {
+    $company_news = [
+        ['user_id' => '11', 'title' => 'Requisitos para solicitar vacaciones fuera de temporada', 'subtitle' => 'Consideraciones especiales para la solicitud de vacaciones', 'tags' => 'vacaciones, fuera de temporada, requisitos', 'date' => '2024-10-17', 'body' => 'Para solicitar vacaciones fuera de temporada alta, se requiere la aprobación del supervisor inmediato y del departamento de Recursos Humanos, asegurando que no afecte el rendimiento del equipo.'],
+        ['user_id' => '11', 'title' => 'Beneficios de las vacaciones anuales', 'subtitle' => 'Mejora tu bienestar tomando descansos regulares', 'tags' => 'vacaciones, beneficios, salud', 'date' => '2024-10-17', 'body' => 'Tomar vacaciones anuales mejora tu salud mental, reduce el estrés y aumenta la productividad. Los empleados que descansan regularmente tienen mayor rendimiento y satisfacción laboral.'],
+        ['user_id' => '8', 'title' => 'Política de días feriados', 'subtitle' => 'Días feriados contemplados en la política de vacaciones', 'tags' => 'vacaciones, feriados, política', 'date' => '2024-10-17', 'body' => 'Los días feriados establecidos por el gobierno son considerados dentro de la política de vacaciones, y no se descuentan de tus días de descanso anuales.']
+    ];
+
+    foreach ($company_news as $news) {
+        $user_id = $news['user_id'];
+        $title = $news['title'];
+        $subtitle = $news['subtitle'];
+        $tags = $news['tags'];
+        $date = $news['date'];
+        $body = $news['body'];
+
+        $insert_query = "INSERT INTO company_news (user_id, title, subtitle, tags, date, body) 
+                         VALUES ('$user_id', '$title', '$subtitle', '$tags', '$date', '$body')";
+
+        if ($conn->query($insert_query) === TRUE) {
+            echo "Noticia '$title' para el usuario ID '$user_id' insertada exitosamente.<br>";
+        } else {
+            echo "Error insertando la noticia '$title' para el usuario ID '$user_id': " . $conn->error . "<br>";
+        }
+    }
+}
+
 
 function create_policies_table($conn) {
     $create_policies_table_query = "CREATE TABLE IF NOT EXISTS policies (
@@ -264,6 +309,8 @@ function reset_database($conn) {
     insert_policies($conn);
     create_vacation_requests_table($conn);
     insert_vacation_requests($conn);
+    create_company_news_table($conn);
+    insert_company_news($conn);
 }
 
 function reset_users_table($conn) {

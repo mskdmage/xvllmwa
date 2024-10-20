@@ -39,6 +39,11 @@
                 </form>
             </header>
             <div class="card-content">
+                <div class="buttons is-right">
+                    <a href="<?= "$WEBROOT/board" ?>" class="button">
+                        Ver Ultimas Noticias de la Empresa
+                    </a>
+                </div>
                 <div class="columns">
                     <div class="column is-full">
                         <div class="content" style="clear: both;">
