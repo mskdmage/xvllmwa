@@ -46,7 +46,7 @@ $tools = new ToolsDefinition([
         }
     ],
     'query_users_table' => [
-        'description' => 'Base de datos de los empleados (users), tiene columnas llamadas id, vacation_days. No asumas los nombres de las otras columnas.',
+        'description' => 'Base de datos de los empleados (users), tiene columnas llamadas id, role, vacation_days y otras. No asumas los nombres de las otras columnas.',
         'parameters' => [
             'query' => [
                 'description' => 'MySQL query a la tabla de users.',

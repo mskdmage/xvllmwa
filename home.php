@@ -23,13 +23,13 @@
         <div class="columns">
             <div class="column is-one-half">
                 <p class="has-text-justified">
-                    <strong>Nexora Tech</strong> es una corporación de tecnología avanzada que ha lanzado un proyecto innovador: una serie de asistentes virtuales impulsados por LLMs de última generación. Estos asistentes están diseñados para mejorar la interacción de los empleados con la información de la empresa y facilitar sus tareas diarias.
+                    <strong>Nexora Tech</strong> es una corporación de tecnología avanzada que ha lanzado un proyecto innovador: una serie de asistentes virtuales impulsados por LLMs de última generación para gestionar vacaciones, politicas, noticas, etc. Estos asistentes están diseñados para mejorar la interacción de los empleados con la información de la empresa y facilitar sus tareas diarias.
                 </p>
                 <p class="has-text-justified">
                 Sin embargo, el proyecto fue implementado con premura, sin la adecuada supervisión de seguridad. El equipo de desarrollo, presionado para cumplir con los plazos, ha descuidado aspectos críticos que podrían comprometer la integridad del sistema.
                 </p>
                 <p class="has-text-justified">
-                    Ahora que trabajas como empleado de Nexora y con tu entusiasmo por la ciberseguridad, tu misión es sumamente importante para garantizar que el sistema no sea vulnerable antes de su lanzamiento.
+                    Ahora que trabajas como empleado de Nexora Tech y con tu entusiasmo por la ciberseguridad, tu misión es testear los distintps fallos de seguridad que presenta el sistema.
                 </p>
             </div>
             <div class="column is-one-half">
@@ -48,6 +48,6 @@
 <div class="notification is-warning">
     <p>
         <strong>Aviso Legal</strong><br>
-        No aloje esta aplicación en entornos en línea, especialmente en producción. XVLLMWA es extremadamente vulnerable, y cualquier exposición podría comprometer gravemente su sistema. No nos hacemos responsables de ningún daño. Mantenga la seguridad como su prioridad número uno.
+        No debes alojar esta aplicación en entornos en línea, especialmente en producción. XVLLMWA es extremadamente vulnerable, y cualquier exposición podría comprometer gravemente su sistema. No nos hacemos responsables de ningún daño. Tu prioridad número uno debe ser siempre la seguridad.
     </p>
 </div>

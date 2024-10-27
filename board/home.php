@@ -3,6 +3,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 $conn = connect_to_db();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['user'])) {
@@ -110,4 +111,3 @@ if (isset($_SESSION['user'])) {
 }
 
 $conn->close();
-?>

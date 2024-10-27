@@ -1,6 +1,8 @@
 <?php
+
 session_start();
-include('config/config.php');
+require('config/config.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,24 +23,24 @@ include('config/config.php');
 
     <nav class="navbar is-dark is-fixed-top" role="navigation">
         <div class="navbar-brand">
-            <?php include("$DOCUMENT_ROOT/components/header.php"); ?>
+            <?php require("$DOCUMENT_ROOT/components/header.php"); ?>
         </div>
     </nav>
 
     <div class="main-content container mt-6">
         <div class="columns mt-6">
             <div class="column is-one-quarter">
-                <?php include("$DOCUMENT_ROOT/components/sidepanel.php"); ?>
+                <?php require("$DOCUMENT_ROOT/components/sidepanel.php"); ?>
             </div>
             <div class="column">
-                <?php include("home.php"); ?>
+                <?php require("home.php"); ?>
             </div>
         </div>
     </div>
 
     <footer class="footer">
         <div class="content has-text-centered">
-            <?php include("$DOCUMENT_ROOT/components/footer.php"); ?>
+            <?php require("$DOCUMENT_ROOT/components/footer.php"); ?>
         </div>
     </footer>
 

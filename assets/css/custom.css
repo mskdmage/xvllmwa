@@ -46,7 +46,7 @@ pre {
 }
 
 .chat-history {
-    max-height: 24rem;
+    max-height: 100vh;
     overflow-y: scroll;
     padding-right: 1rem;
 }

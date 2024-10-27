@@ -1,4 +1,5 @@
 <?php
+
 $conn = connect_to_db();
 $sql = "SELECT * FROM users";
 $result = $conn->query($sql);
@@ -9,7 +10,6 @@ if ($result) {
     echo "Error en la consulta: " . $conn->error;
     $users = [];
 }
-
 
 ?>
 <div class="columns is-multiline">

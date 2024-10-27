@@ -1,6 +1,15 @@
 <?php
+
+/**
+ * Este script maneja el inicio de sesión de usuarios.
+ * 1. Inicia la sesión del usuario.
+ * 2. Conecta a la base de datos y verifica las credenciales proporcionadas (nombre de usuario y contraseña).
+ * 3. Si las credenciales son correctas, se guarda la información del usuario en la sesión.
+ * 4. Redirige al usuario a la página de instrucciones en caso de éxito.
+ * 5. Si las credenciales son incorrectas, redirige a la página 'forbidden'.
+ */
 session_start();
-include('../config/config.php');
+require('../config/config.php');
 $conn = connect_to_db();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

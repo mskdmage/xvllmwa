@@ -10,5 +10,7 @@ try {
     }
     
 } catch {
-    
+
+    console.error('Error al tratar de alcanzar el fin de la historia de chat:', error);    
+
 }
