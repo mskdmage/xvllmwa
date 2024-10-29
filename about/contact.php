@@ -30,9 +30,9 @@ require('../config/config.php');
                 <?php require("$DOCUMENT_ROOT/components/sidepanel.php"); ?>
             </div>
             <div class="column">
-                <div class="card">
+                <div class="card has-background-white has-text-dark">
                     <header class="card-header">
-                        <p class="card-header-title is-centered">
+                        <p class="card-header-title has-text-dark is-centered">
                             Contáctanos
                         </p>
                     </header>
