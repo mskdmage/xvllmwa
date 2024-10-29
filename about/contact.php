@@ -1,8 +1,6 @@
 <?php
-
 session_start();
 require('../config/config.php');
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,10 +11,9 @@ require('../config/config.php');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Extreme Vulnerable LLLM Web Application">
     <meta name="author" content="G2">
-    <title>XVLLMWA - Admin Panel</title>
+    <title>XVLLMWA - Contacto</title>
     <link href="<?= "$WEBROOT/assets/css/bulma.min.css"; ?>" rel="stylesheet">
     <link href="<?= "$WEBROOT/assets/css/custom.css"; ?>" rel="stylesheet">
-
 </head>
 
 <body>
@@ -33,7 +30,27 @@ require('../config/config.php');
                 <?php require("$DOCUMENT_ROOT/components/sidepanel.php"); ?>
             </div>
             <div class="column">
-                <?php require("home.php"); ?>
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title is-centered">
+                            Contáctanos
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            
+                            <div class="is-flex is-justify-content-center mb-4">
+                                <figure class="image" style="width: 12rem; height: 12rem;">
+                                    <img src="<?= "$WEBROOT/assets/images/telegram.png"; ?>" alt="Descriptive Image">
+                                </figure>
+                            </div>
+                            
+                            <div class="has-text-centered">
+                                <a href="https://github.com/mskdmage/xvllmwa" target="_blank" class="button is-link">GitHub Repo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

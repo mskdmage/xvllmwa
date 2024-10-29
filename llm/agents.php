@@ -1,11 +1,25 @@
 <?php
+
 class Memory {
     private $max_memory;
 
+    /**
+     * Constructor de la clase Memory.
+     *
+     * @param int $max_memory Cantidad máxima de hilos de conversación a conservar en la memoria.
+     */
     public function __construct($max_memory) {
         $this->max_memory = $max_memory;
     }
 
+    /**
+     * Agrega un hilo de conversación a la base de datos.
+     *
+     * @param int $user_id ID del usuario.
+     * @param string $agent_name Nombre del agente.
+     * @param string $role Rol en la conversación (e.g., 'user' o 'bot').
+     * @param string $content Contenido de la conversación.
+     */
     public function add_conversation_thread($user_id, $agent_name, $role, $content) {
         $conn = connect_to_db();
         $sequence = $this->get_next_sequence($user_id, $agent_name);
@@ -23,6 +37,13 @@ class Memory {
         $conn->close();
     }
 
+    /**
+     * Obtiene el historial completo de conversaciones de un usuario específico con un agente.
+     *
+     * @param int $user_id ID del usuario.
+     * @param string $agent_name Nombre del agente.
+     * @return array Historial completo de la conversación ordenado de forma descendente por secuencia.
+     */
     public function get_conversation_history($user_id, $agent_name) {
         $conn = connect_to_db();
         $sql = "SELECT * FROM conversations WHERE user_id = ? AND agent = ? ORDER BY sequence DESC";
@@ -45,6 +66,15 @@ class Memory {
         return $conversation_history;
     }
 
+    /**
+     * Obtiene el historial limitado de conversaciones de un usuario con un agente,
+     * basado en el valor de $max_memory.
+     *
+     * @param int $user_id ID del usuario.
+     * @param string $agent_name Nombre del agente.
+     * @return array Historial de conversaciones limitado a la cantidad máxima especificada,
+     *               ordenado en orden ascendente por secuencia.
+     */
     public function get_max_conversation_history($user_id, $agent_name) {
         $conn = connect_to_db();
         $sql = "SELECT role, content FROM conversations WHERE user_id = ? AND agent = ? ORDER BY sequence DESC LIMIT ?";
@@ -71,6 +101,12 @@ class Memory {
         return $max_conversation_history;
     }
 
+    /**
+     * Elimina el historial de conversaciones completo de un usuario con un agente específico.
+     *
+     * @param int $user_id ID del usuario.
+     * @param string $agent_name Nombre del agente.
+     */
     public function delete_conversation_history($user_id, $agent_name) {
         $conn = connect_to_db();
         
@@ -88,6 +124,13 @@ class Memory {
         $conn->close();
     }
 
+    /**
+     * Obtiene el siguiente número de secuencia para una conversación de un usuario con un agente.
+     *
+     * @param int $user_id ID del usuario.
+     * @param string $agent_name Nombre del agente.
+     * @return int Número de secuencia siguiente, incrementado en 1 si existe, o 1 si es el primero.
+     */
     private function get_next_sequence($user_id, $agent_name) {
         $conn = connect_to_db();
         $sql = "SELECT MAX(sequence) AS max_sequence FROM conversations WHERE user_id = ? AND agent = ?";
@@ -112,10 +155,24 @@ class Memory {
 class ToolsDefinition {
     private $tools;
 
+    /**
+     * Constructor de la clase ToolsDefinition.
+     *
+     * @param array $tools Arreglo de herramientas disponibles, donde cada herramienta contiene
+     *                     información como el callback, la descripción y los parámetros.
+     */
     public function __construct($tools) {
         $this->tools = $tools;
     }
 
+    /**
+     * Ejecuta una herramienta específica con los argumentos dados.
+     *
+     * @param string $tool_name Nombre de la herramienta a ejecutar.
+     * @param mixed $tool_arguments Argumentos que se pasarán a la herramienta.
+     * @return mixed El resultado de la ejecución de la herramienta.
+     * @throws Exception Si la herramienta no está definida.
+     */
     public function execute_tool($tool_name, $tool_arguments) {
         if (isset($this->tools[$tool_name])) {
             $tool_executable = $this->tools[$tool_name]['callback'];
@@ -125,18 +182,42 @@ class ToolsDefinition {
         }
     }
 
+    /**
+     * Obtiene todas las herramientas definidas en el objeto.
+     *
+     * @return array Arreglo de herramientas disponibles.
+     */
     public function get_tools() {
         return $this->tools;
     }
 
+    /**
+     * Obtiene la descripción de una herramienta específica.
+     *
+     * @param string $tool_name Nombre de la herramienta.
+     * @return string Descripción de la herramienta, o 'No desc' si no tiene una descripción.
+     */
     public function get_tool_description($tool_name) {
         return $this->tools[$tool_name]['description'] ?? 'No desc';
     }
 
+    /**
+     * Obtiene los parámetros de una herramienta específica.
+     *
+     * @param string $tool_name Nombre de la herramienta.
+     * @return array Arreglo de parámetros de la herramienta o un arreglo vacío si no tiene parámetros.
+     */
     public function get_tool_parameters($tool_name) {
         return $this->tools[$tool_name]['parameters'] ?? [];
     }
 
+    /**
+     * Genera una descripción en formato JSON de los parámetros de una herramienta específica,
+     * incluyendo el nombre, descripción, obligatoriedad y tipo de cada parámetro.
+     *
+     * @param string $tool_name Nombre de la herramienta.
+     * @return string Descripción en formato JSON de los parámetros de la herramienta.
+     */
     public function get_parameters_description($tool_name) {
         $parameters = $this->get_tool_parameters($tool_name);
         $parameters_description = '[';
@@ -152,6 +233,12 @@ class ToolsDefinition {
         return $parameters_description;
     }
 
+    /**
+     * Genera un prompt en formato JSON que incluye todas las herramientas, con su nombre,
+     * descripción y parámetros, listo para ser utilizado en un contexto de generación de texto.
+     *
+     * @return string Prompt en formato JSON de todas las herramientas.
+     */
     public function get_tools_prompt() {
         $tools_prompt = "";
 
@@ -175,12 +262,26 @@ class Orchestrator {
     protected LLMClient $llm_client;
     protected ToolsDefinition $tools;
 
+    /**
+     * Constructor de la clase Orchestrator.
+     *
+     * @param string $orchestrator_template Plantilla para el prompt del orquestador.
+     * @param LLMClient $llm_client Cliente de LLM que maneja las solicitudes de generación.
+     * @param ToolsDefinition $tools Definición de herramientas disponibles para el orquestador.
+     */
     public function __construct($orchestrator_template, $llm_client, $tools) {
         $this->orchestrator_template = $orchestrator_template;
         $this->llm_client = $llm_client;
         $this->tools = $tools;
     }
 
+    /**
+     * Ejecuta el flujo de conversación, procesando el mensaje del usuario y el historial.
+     *
+     * @param string $message Mensaje enviado por el usuario.
+     * @param array $conversation_history Historial de conversación anterior.
+     * @return array Respuesta del agente y resultados de las herramientas usadas.
+     */
     public function run($message, $conversation_history=[]) {
         $prepared_partial_prompt = $this->prepare_orchestrator_prompt();
         $messages = array_merge($conversation_history, [
@@ -216,18 +317,35 @@ class Orchestrator {
         return ['content' => $final_answer, 'tool_outputs' => null];
     }
 
+    /**
+     * Prepara el prompt del orquestador, incluyendo las herramientas disponibles.
+     *
+     * @return string Prompt preparado para el orquestador.
+     */
     private function prepare_orchestrator_prompt() {
         $tools_prompt = $this->tools->get_tools_prompt();
         $prepared_prompt = str_replace('{tools}', $tools_prompt, $this->orchestrator_template);
         return $prepared_prompt;
     }
 
+    /**
+     * Analiza las llamadas a herramientas en la respuesta del LLM.
+     *
+     * @param string $response Respuesta generada por el LLM.
+     * @return array Arreglo con las llamadas a herramientas encontradas en el texto.
+     */
     private function parse_tool_calls($response) {
         $pattern = '/<tool_calls>(.*?)<\/tool_calls>/s';
         preg_match($pattern, $response, $matches);
         return json_decode($matches[1] ?? '', true);
     }
 
+    /**
+     * Extrae la respuesta final del asistente desde el texto de respuesta.
+     *
+     * @param string $response Respuesta generada por el LLM.
+     * @return string Respuesta final del asistente.
+     */
     private function parse_final_answer($response) {
         $pattern = '/<final_answer>(.*?)<\/final_answer>/s';
         preg_match($pattern, $response, $matches);
@@ -241,6 +359,14 @@ class Agent {
     private $agent_name;
     private $agent_prompt;
 
+    /**
+     * Constructor de la clase Agent.
+     *
+     * @param Orchestrator $orchestrator Objeto Orchestrator para gestionar el flujo de conversación.
+     * @param Memory $memory Objeto Memory para manejar el almacenamiento del historial de conversación.
+     * @param string $agent_name Nombre del agente.
+     * @param string $agent_prompt Prompt inicial del agente.
+     */
     public function __construct($orchestrator, $memory, $agent_name, $agent_prompt) {
         $this->orchestrator = $orchestrator;
         $this->memory = $memory;
@@ -248,6 +374,12 @@ class Agent {
         $this->agent_prompt = $agent_prompt;
     }
 
+    /**
+     * Ejecuta la conversación del agente, gestionando el mensaje del usuario.
+     *
+     * @param string $message Mensaje del usuario.
+     * @return array Respuesta del agente, incluyendo la salida de las herramientas usadas.
+     */
     public function run($message) {
 
         $user_id = $_SESSION['user']['id'];
@@ -266,6 +398,9 @@ class Agent {
         return $response;
     }
 
+    /**
+     * Muestra el historial de conversación en el formato HTML para el chat.
+     */
     public function display_chat_history() {
         $user_id = $_SESSION['user']['id'];
         $full_name = $_SESSION['user']['full_name'];
@@ -301,6 +436,11 @@ class Agent {
         }
     }
 
+    /**
+     * Obtiene la información del usuario desde la sesión.
+     *
+     * @return array Información relevante del usuario.
+     */
     private function get_user_info() {
         $user_info = [
             'user_id' => $_SESSION['user']['id'],
@@ -312,6 +452,9 @@ class Agent {
         return $user_info;
     }
 
+    /**
+     * Elimina el historial de conversación del usuario con el agente.
+     */
     public function delete_history() {
         $user_id = $_SESSION['user']['id'];
         $this->memory->delete_conversation_history($user_id, $this->agent_name);

@@ -1,9 +1,9 @@
 <?php
-include('../../llm/clients.php');
-include('../../llm/agents.php');
-include('../../llm/prompts.php');
+require('../../llm/clients.php');
+require('../../llm/agents.php');
+require('../../llm/prompts.php');
 
-$agent_name = 'VacatIO';
+$agent_name = 'VacatIO::Beneficios';
 $agent_prompt = "Tu nombre es $agent_name, ayudas a los clientes a solucionar sus dudas sobre políticas de vacaciones, beneficios, y gestión de tiempo libre.";
 
 $llm_client = new OpenAIClient('gpt-4o-mini-2024-07-18');

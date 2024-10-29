@@ -37,7 +37,7 @@
                         <div class="content" style="clear: both;">
                             <div class="chat-history" id="chat-history">
                             <?php
-                            include('agent.php');
+                            require('agent.php');
                             if (isset($_POST['message'])) {
                                 $message = $_POST['message'];
                                 $response = $agent->run($message);

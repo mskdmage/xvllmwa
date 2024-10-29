@@ -47,9 +47,8 @@
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link" href="#"><strong>Acerca de</strong></a>
                     <div class="navbar-dropdown">
-                        <a class="navbar-item" href="#">Información</a>
-                        <a class="navbar-item" href="#">Equipo</a>
-                        <a class="navbar-item" href="#">Contacto</a>
+                        <a class="navbar-item" href="<?= "$WEBROOT/about/team.php" ?>">Equipo</a>
+                        <a class="navbar-item" href="<?= "$WEBROOT/about/contact.php" ?>">Contacto</a>
                     </div>
                 </div>
             </div>
